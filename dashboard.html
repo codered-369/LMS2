@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/dashboardstyle.css">
+    <script>
+        function logout() {
+            localStorage.removeItem('currentUser');
+            alert('You are logged out');
+            window.location.href = 'login.html';
+        }
+
+        function displayDashboard() {
+            const username = localStorage.getItem('currentUser');
+            if (username) {
+                const users = JSON.parse(localStorage.getItem('users')) || {};
+                const user = users[username];
+                if (user) {
+                    document.getElementById('username').innerText = username;
+                    document.getElementById('courses').innerHTML = user.enrolledCourses.map(c => `<li>${c.title} - <a href="${c.youtubeLink}" target="_blank">Watch on YouTube</a></li>`).join('');
+                    document.getElementById('completion').innerText = user.enrolledCourses.map(c => `${c.title}: ${c.completion}%`).join(', ');
+                }
+            } else {
+                window.location.href = 'login.html';
+            }
+        }
+
+        function enrollMoreCourses() {
+            window.location.href = 'index.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', displayDashboard);
+    </script>
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo">STUDENT DASHBOARD</div>
+    </div>
+    <div class="content">
+        <h1>Welcome, <span id="username"></span>!</h1>
+        <h2>Enrolled Courses:</h2>
+        <ul id="courses"></ul>
+        <h2>Course Completion:</h2>
+        <p id="completion"></p>
+        <button onclick="logout()" class="btn btn-primary">Logout</button>
+        <button onclick="enrollMoreCourses()" class="btn btn-primary">Enroll More Courses</button>
+    </div>
+</body>
+
+</html>
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/dashboardstyle.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #343a40;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .content h1 {
+            margin-bottom: 20px;
+            color: #343a40;
+        }
+
+        .courses, .completion {
+            margin-bottom: 30px;
+        }
+
+        .courses ul, .completion p {
+            list-style: none;
+            padding: 0;
+        }
+
+        .courses li, .completion span {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #565e64;
+        }
+    </style>
+    <script>
+        function logout() {
+            localStorage.removeItem('currentUser');
+            alert('You are logged out');
+            window.location.href = 'login.html';
+        }
+
+        function displayDashboard() {
+            const username = localStorage.getItem('currentUser');
+            if (username) {
+                const users = JSON.parse(localStorage.getItem('users')) || {};
+                const user = users[username];
+                if (user) {
+                    document.getElementById('username').innerText = username;
+                    document.getElementById('courses').innerHTML = user.enrolledCourses.map(c => `<li>${c.title} - <a href="${c.youtubeLink}" target="_blank">Watch on YouTube</a></li>`).join('');
+                    document.getElementById('completion').innerHTML = user.enrolledCourses.map(c => `<span>${c.title}: ${c.completion}%</span>`).join(', ');
+                }
+            } else {
+                window.location.href = 'login.html';
+            }
+        }
+
+        function enrollMoreCourses() {
+            window.location.href = 'index.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', displayDashboard);
+    </script>
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo">STUDENT DASHBOARD</div>
+        <button onclick="logout()" class="btn btn-secondary">Logout</button>
+    </div>
+    <div class="content">
+        <h1>Welcome, <span id="username"></span>!</h1>
+        <div class="courses">
+            <h2>Enrolled Courses:</h2>
+            <ul id="courses"></ul>
+        </div>
+        <div class="completion">
+            <h2>Course Completion:</h2>
+            <p id="completion"></p>
+        </div>
+        <button onclick="enrollMoreCourses()" class="btn btn-primary">Enroll More Courses</button>
+    </div>
+</body>
+
+</html> -->

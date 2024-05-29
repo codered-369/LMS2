@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Details</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <script>
+        function displayCourseDetails() {
+            const courseTitle = localStorage.getItem('currentCourse');
+            const courses = JSON.parse(localStorage.getItem('courses')) || [];
+            const course = courses.find(c => c.title === courseTitle);
+
+            if (course) {
+                document.getElementById('courseTitle').innerText = course.title;
+                document.getElementById('courseDescription').innerText = course.description;
+            } else {
+                document.getElementById('courseTitle').innerText = 'Course not found';
+                document.getElementById('courseDescription').innerText = '';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', displayCourseDetails);
+    </script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="header mb-4">
+            <h1 id="courseTitle" class="text-center"></h1>
+        </div>
+        <div class="course-info">
+            <p id="courseDescription"></p>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Enrollment Landing Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/indexstyle.css">
+    <script>
+        function enrollCourse(courseTitle) {
+            const courses = JSON.parse(localStorage.getItem('courses')) || [];
+            const course = courses.find(c => c.title === courseTitle);
+            if (course) {
+                const username = localStorage.getItem('currentUser');
+                const users = JSON.parse(localStorage.getItem('users')) || {};
+                const user = users[username];
+
+                if (user) {
+                    if (!user.enrolledCourses.some(c => c.title === course.title)) {
+                        course.completion = 0;
+                        user.enrolledCourses.push(course);
+                        users[username] = user;
+                        localStorage.setItem('users', JSON.stringify(users));
+                        alert('You are enrolled in this course');
+                    } else {
+                        alert('You are already enrolled in this course');
+                    }
+                } else {
+                    alert('User not found');
+                }
+            } else {
+                alert('Course not found');
+            }
+        }
+
+        function displayCourses() {
+            const courses = JSON.parse(localStorage.getItem('courses')) || [];
+            const coursesContainer = document.getElementById('coursesContainer');
+            coursesContainer.innerHTML = courses.map(course => `
+                <div class="course-card">
+                    <h3>${course.title}</h3>
+                    <p>${course.description}</p>
+                    <button onclick="enrollCourse('${course.title}')" class="btn btn-primary enroll-button">Enroll Now</button>
+                </div>
+                `).join('');
+        }
+
+        function goToDashboard() {
+            const username = localStorage.getItem('currentUser');
+            if (username) {
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('Please log in first');
+                window.location.href = 'login.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', displayCourses);
+    </script>
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo">COURSES</div>
+    </div>
+    <div class="hero">
+        <h1>Boost Your Skills with Our Expert-Led Courses</h1>
+        <p id="anim">Learn at your own pace with flexible and engaging courses.</p>
+        <button class="btn btn-secondary" onclick="goToDashboard()">Go to Dashboard</button>
+    </div>
+    <div class="courses" id="coursesContainer">
+        <!-- Courses will be dynamically populated here -->
+    </div>
+</body>
+
+</html>
+
